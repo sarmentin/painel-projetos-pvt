@@ -6,7 +6,7 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "Painel@2026"
     ports:
-      - "1433:1433"
+      - "14330:1433"
     volumes:
       - sqlserver-data:/var/opt/mssql
 
