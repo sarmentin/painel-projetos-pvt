@@ -1,0 +1,246 @@
+/* Página */
+.painel {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+/* Cabeçalho: título à esquerda, filtros à direita */
+.cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+h1 {
+  margin: 0;
+  color: var(--titulo);
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.sincronizacao {
+  margin: 6px 0 0;
+  color: var(--texto-suave);
+  font-size: 0.9375rem;
+}
+
+/* Filtros: o ativo ganha o gradiente da marca */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  background: var(--cartao);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+}
+
+.filtros button {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--texto-suave);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.filtros button:hover {
+  color: var(--texto);
+}
+
+.filtros button.ativo {
+  background: var(--gradiente-marca);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.legenda {
+  max-width: 72ch;
+  margin: 0 0 28px;
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
+/* Lista de projetos */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cartão: três colunas (identificação, horas, avanço).
+   A cor do status vem do atributo data-status. */
+.projeto {
+  --cor-status: var(--saudavel);
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(220px, 1.2fr) 1.6fr 1.4fr;
+  align-items: center;
+  gap: 28px;
+  padding: 20px 24px 20px 28px;
+  background: var(--cartao);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.projeto[data-status="Atencao"] {
+  --cor-status: var(--atencao);
+}
+
+.projeto[data-status="Critico"] {
+  --cor-status: var(--critico);
+}
+
+/* Faixa colorida à esquerda */
+.projeto::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: var(--cor-status);
+}
+
+.status {
+  color: var(--cor-status);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.identificacao h2 {
+  margin: 2px 0 0;
+  color: var(--titulo);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cliente {
+  margin: 2px 0 0;
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
+/* Horas */
+.horas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 0;
+}
+
+.horas dt {
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+}
+
+.horas dd {
+  margin: 2px 0 0;
+  color: var(--titulo);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.horas .negativo dd {
+  color: var(--critico);
+}
+
+/* Barra: entregue no gradiente da marca, marca de gasto na cor do status */
+.trilha {
+  position: relative;
+  height: 8px;
+  background: var(--borda);
+  border-radius: 4px;
+}
+
+.entregue {
+  height: 100%;
+  background: var(--gradiente-marca);
+  border-radius: 4px;
+}
+
+.gasto {
+  position: absolute;
+  top: -6px;
+  width: 3px;
+  height: 20px;
+  background: var(--cor-status);
+  border-radius: 2px;
+  box-shadow: 0 0 0 2px var(--fundo);
+  transform: translateX(-50%);
+}
+
+.percentuais {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 10px 0 0;
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Carregando, erro e lista vazia */
+.aviso {
+  padding: 24px;
+  background: var(--cartao);
+  border: 1px dashed var(--borda);
+  border-radius: 10px;
+  color: var(--texto-suave);
+}
+
+.aviso.erro {
+  border-color: var(--critico);
+  color: var(--critico);
+}
+
+/* Tablet: o cartão vira uma coluna */
+@media (max-width: 860px) {
+  .projeto {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+/* Celular */
+@media (max-width: 480px) {
+  .painel {
+    padding: 32px 16px 48px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .horas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filtros {
+    width: 100%;
+  }
+
+  .filtros button {
+    flex: 1;
+  }
+}
+
+/* Respeita quem desativou animações no sistema */
+@media (prefers-reduced-motion: reduce) {
+  .filtros button {
+    transition: none;
+  }
+}

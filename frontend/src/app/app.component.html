@@ -1,13 +1,82 @@
-<h1>Painel de projetos</h1>
+<main class="painel">
+    <header class="cabecalho">
+    <div>
+      <h1>Painel de projetos</h1>
+      @if (painel()?.sincronizadoEm; as sincronizadoEm) {
+        <p class="sincronizacao">Dados do RM atualizados em {{ sincronizadoEm | date: "dd/MM 'às' HH:mm" }}</p>
+      }
+    </div>
 
-@if (carregando()) {
-  <p>Carregando projetos...</p>
-} @else if (erro()) {
-  <p>Não foi possível carregar os projetos. Confira se a API está rodando em http://localhost:5190.</p>
-} @else {
-  <ul>
-    @for (projeto of painel()?.projetos ?? []; track projeto.id) {
-      <li>{{ projeto.nome }} ({{ projeto.status }})</li>
-    }
-  </ul>
-}
+    <nav class="filtros" aria-label="Filtrar por status">
+      @for (filtro of filtros; track filtro.rotulo) {
+        <button
+          type="button"
+          [class.ativo]="filtroAtual() === filtro.valor"
+          [attr.aria-pressed]="filtroAtual() === filtro.valor"
+          (click)="filtrar(filtro.valor)">
+          {{ filtro.rotulo }}
+        </button>
+      }
+    </nav>
+  </header>
+
+  <p class="legenda">
+    A barra mostra o trabalho entregue, pelas etapas concluídas. A marca mostra quanto das horas vendidas já foi gasto.
+    Quando a marca passa muito à frente da barra, a entrega está atrasada em relação ao gasto.
+  </p>
+
+  @if (carregando()) {
+    <p class="aviso">Carregando projetos...</p>
+  } @else if (erro()) {
+    <p class="aviso erro">Não foi possível carregar os projetos. Confira se a API está rodando em http://localhost:5190.</p>
+  } @else {
+    <ul class="lista">
+      @for (projeto of painel()?.projetos ?? []; track projeto.id) {
+        <li class="projeto" [attr.data-status]="projeto.status">
+          <div class="identificacao">
+            <span class="status">{{ rotulosStatus[projeto.status] }}</span>
+            <h2>{{ projeto.nome }}</h2>
+            <p class="cliente">{{ projeto.cliente }}</p>
+          </div>
+
+          <dl class="horas">
+            <div>
+              <dt>Vendidas</dt>
+              <dd>{{ projeto.horasVendidas | number: '1.0-1' }}h</dd>
+            </div>
+            <div>
+              <dt>Planejadas</dt>
+              <dd>{{ projeto.horasPlanejadas | number: '1.0-1' }}h</dd>
+            </div>
+            <div>
+              <dt>Realizadas</dt>
+              <dd>{{ projeto.horasRealizadas | number: '1.0-1' }}h</dd>
+            </div>
+            <div [class.negativo]="projeto.saldo < 0">
+              <dt>Saldo</dt>
+              <dd>{{ projeto.saldo | number: '1.0-1' }}h</dd>
+            </div>
+          </dl>
+
+          <div class="avanco">
+            @if (projeto.avancoFisico !== null) {
+              <div
+                class="trilha"
+                role="img"
+                [attr.aria-label]="'Entregue ' + percentual(projeto.avancoFisico) + ', gasto ' + percentual(projeto.consumo)">
+                <div class="entregue" [style.width.%]="larguraBarra(projeto.avancoFisico)"></div>
+                <div class="gasto" [style.left.%]="larguraBarra(projeto.consumo)"></div>
+              </div>
+            }
+            <p class="percentuais">
+              <span>Entregue {{ percentual(projeto.avancoFisico) }}</span>
+              <span>Gasto {{ percentual(projeto.consumo) }}</span>
+            </p>
+          </div>
+        </li>
+      } @empty {
+        <li class="aviso">Nenhum projeto com esse status.</li>
+      }
+    </ul>
+  }
+</main>
