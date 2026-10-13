@@ -195,8 +195,10 @@ public interface IRmClient
 }
 ```
 
-- **`MockRmClient`:** implementação com dados simulados, usada neste projeto.
+- **`MockRmClient`:** implementação com dados simulados, para desenvolvimento e testes.
 - **`TotvsRmClient`:** implementação real, a ser feita quando a forma de integração da PVT for conhecida.
+
+> **No código deste repositório**, a `IRmClient` e os workers não foram implementados. Os dados que viriam do RM pela sincronização estão nos dados de exemplo (`DbSeeder`), já gravados no banco do portal. Como o painel sempre lê do banco local, o comportamento da tela é o mesmo.
 
 Toda a tradução entre os dois sistemas (nomes de campos do RM, ids do portal e códigos do RM, REST ou SOAP) fica dentro da implementação. Trocar o mock pela integração real não altera serviços nem workers.
 
@@ -353,7 +355,7 @@ O projeto D mostra por que o saldo sozinho não basta: ainda tem 30h, mas entreg
 | Front | Angular + TypeScript | Alinhado ao ambiente da PVT e à minha experiência |
 | Back | ASP.NET Core (.NET/C#) | Alinhado ao ambiente da PVT; `BackgroundService` atende os workers sem ferramentas extras |
 | Banco | SQL Server | Relacional, combina naturalmente com .NET e é comum em ambientes TOTVS RM |
-| Infra | Docker | Permite subir o SQL Server e a aplicação em qualquer máquina, sem instalação manual |
+| Infra | Docker | Sobe o mesmo SQL Server em qualquer máquina, com um comando e sem instalação manual |
 
 ### 5.2 Modelagem
 
