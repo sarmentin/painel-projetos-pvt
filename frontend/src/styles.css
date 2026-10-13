@@ -1,1 +1,42 @@
-/* You can add global styles to this file, and also import other style files */
+/* Cores da identidade visual da PVT */
+:root {
+  --fundo: #020617;
+  --cartao: rgba(15, 23, 42, 0.6);
+  --borda: #1e293b;
+  --texto: #e2e8f0;
+  --texto-suave: #94a3b8;
+  --titulo: #ffffff;
+  --azul: #155dfc;
+  --ciano: #0092b8;
+  --gradiente-marca: linear-gradient(to right, var(--azul), var(--ciano));
+  --saudavel: #34d399;
+  --atencao: #fbbf24;
+  --critico: #f87171;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  /* Brilhos suaves de ciano e azul no topo, como no site */
+  background:
+    radial-gradient(60% 40% at 15% 0%, rgba(34, 211, 238, 0.12), transparent 70%),
+    radial-gradient(50% 35% at 85% 5%, rgba(59, 130, 246, 0.14), transparent 70%),
+    var(--fundo);
+  color: var(--texto);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ciano);
+  outline-offset: 2px;
+}
