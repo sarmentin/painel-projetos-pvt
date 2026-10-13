@@ -21,8 +21,20 @@ dotnet run --project src/PainelProjetos.Api
 
 Ao iniciar em ambiente de desenvolvimento, a API **cria o banco e insere os dados de exemplo** automaticamente.
 
-- Painel: http://localhost:5190/api/projetos
+- API: http://localhost:5190/api/projetos
 - Swagger: http://localhost:5190/swagger
+
+**Tela (Angular)**, com a API rodando, em outro terminal. Requer [Node.js 20](https://nodejs.org/):
+
+```bash
+cd frontend
+npm install
+npx ng serve
+```
+
+- Painel: http://localhost:4200
+
+O front chama `/api/...` no próprio endereço, e o proxy do Angular (`proxy.conf.json`) repassa para a API. Assim, não é preciso liberar CORS em desenvolvimento.
 
 **Testes:**
 
@@ -89,7 +101,9 @@ Detalhes, alternativas descartadas e premissas estão no [`DESIGN.md`](docs/DESI
 
 ## Escopo do código
 
-**Implementado:** modelo de dados completo (6 entidades), banco SQL Server via Docker, `GET /api/projetos` com filtros, regra de saldo e status, e testes automatizados da regra.
+**Implementado:** modelo de dados completo (6 entidades), banco SQL Server via Docker, `GET /api/projetos` com filtros, regra de saldo e status, testes automatizados da regra e uma tela em Angular.
+
+**A tela** lista os projetos com a cor do status, as horas e uma barra que compara o trabalho entregue (avanço físico) com as horas gastas (consumo). Quando a marca do gasto passa muito à frente da barra, a entrega está atrasada em relação ao financeiro. Tem filtro por status e é responsiva.
 
 **Descrito no `DESIGN.md`, mas não implementado:** os workers de sincronização e Outbox, a integração com o RM (`IRmClient`) e os demais endpoints. Os dados de exemplo fazem o papel do que a sincronização traria.
 
@@ -100,6 +114,8 @@ Detalhes, alternativas descartadas e premissas estão no [`DESIGN.md`](docs/DESI
 ```
 ├── docs/DESIGN.md            Documento de design (Parte 1)
 ├── docker-compose.yml        SQL Server
+├── frontend/                 Tela em Angular
+│   └── src/app/              Componente do painel, serviço e modelo
 └── backend/
     ├── src/PainelProjetos.Api/
     │   ├── Controllers/      Entrada HTTP
@@ -111,4 +127,4 @@ Detalhes, alternativas descartadas e premissas estão no [`DESIGN.md`](docs/DESI
     └── tests/PainelProjetos.Tests/
 ```
 
-**Stack:** .NET 8 · ASP.NET Core Web API · Entity Framework Core · SQL Server · xUnit · Docker
+**Stack:** .NET 8, ASP.NET Core Web API, Entity Framework Core, SQL Server, xUnit, Docker e Angular 18.
